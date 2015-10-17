@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+   
+<?php
+    $db = mysql_connect('localhost','admin','admin','dbtest');
+	?>
+        <link rel="stylesheet" href="css/style1.css">
+
+    
+    
+    
+  </head>
+
+  <body>
+
+    <body class="align">
+
+  <div class="site__container">
+
+    <div class="grid__container">
+
+      <form action="" method="post" class="form form--login">
+
+        <div class="form__field">
+          <label class="fontawesome-user" for="login__username"><span class="hidden">Username</span></label>
+          <input id="username" type="text" class="form__input" placeholder="Username" required>
+        </div>
+
+        <div class="form__field">
+          <label class="fontawesome-lock" for="login__password"><span class="hidden">Password</span></label>
+          <input id="password" type="password" class="form__input" placeholder="Password" required>
+        </div>
+
+        <div class="form__field">
+          <input type="submit" value="Submit" onclick="connection.php">
+        </div>
+		<?php
+session_start();
+include_once 'connection.php';
+
+if(isset($_SESSION['username'])!="")
+{
+ header("Location: home.html");
+}
+if(isset($_POST['btn-login']))
+{
+ $email = mysql_real_escape_string($_POST['email']);
+ $upass = mysql_real_escape_string($_POST['password']);
+ $res=mysql_query("SELECT * FROM users WHERE email='$email'");
+ $row=mysql_fetch_array($res);
+ if($row['password']==md5($upass))
+ {
+  $_SESSION['user'] = $row['user_id'];
+  header("Location: home.html");
+ }
+ else
+ {
+  ?>
+        <script>alert('wrong details');</script>
+        <?php
+ }
+ 
+}
+?>
+
+
+      </form>
+
+      <p class="text--center">Not a member? <a href="register.html">Sign up now</a> <span class="fontawesome-arrow-right"></span></p>
+	   <p class="text--center">Not a Employee? <a href="employee.html">Sign up now</a> <span class="fontawesome-arrow-right"></span></p>
+
+    </div>
+
+  </div>
+
+</body>
+    
+    
+    
+    
+    
+  </body>
+</html>
